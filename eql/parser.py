@@ -1,5 +1,4 @@
 import re
-from expect import expect
 
 binary_re = re.compile('(\+|\-|\*\*|\*|\/|,|\s)')
 functionre = re.compile("([a-z|A-Z]+)((?:[0-9]+\.)?[0-9]*)")
@@ -23,7 +22,6 @@ class PrattToken:
         right = self.parse(token, self.lbp)
         return InfixNode(self.value, left, right)
 
-
 class SpaceToken(PrattToken):
     r = '\s+'
     lbp = 5
@@ -31,7 +29,11 @@ class SpaceToken(PrattToken):
         return BlockNode(self.parse(token))
 
     def led(self, left, token):
-        raise SyntaxError(f"Need an operator for space chaining got {token} at {self.start}")
+        if not isinstance(token, (MulToken, DivToken, PlusToken, MinusToken, ExpToken, ArgToken)):
+            raise SyntaxError(f"Need an operator for space chaining got {token} at {self.end}")
+
+        t = next(self.lexer)
+        return token.led(left, t)
 
 class ArgToken(PrattToken):
     r = '\,'
@@ -65,12 +67,13 @@ class FuncArgToken(PrattToken):
         return PrefixNode(m.group(1), TerminalNode(m.group(2)))
 class FuncToken(PrattToken):
     r = '([a-z|A-Z]+)'
-    lbp = 40
+    lbp = 90
     def nud(self, token):
         if not isinstance(token, LeftParenToken):
             raise SyntaxError(f"Function calls of multiple values require parentheses! {self.value} missing opening paren at {self.start}")
 
-        right = token.nud(next(self.lexer))
+        # right = token.nud(next(self.lexer))
+        right = self.parse(token, self.lbp)
 
         return PrefixNode(self.value, right)
 class NumberToken(PrattToken):
@@ -221,56 +224,3 @@ def parse_expression(lexer, rbp=0, t=None):
     return left
 
 
-
-if __name__ == "__main__":
-    @expect('+(2,2)')
-    def parse_test_1():
-        return parse('2+2')
-
-    @expect('tan(+(2,*(6,sin(58))))')
-    def parse_test_2():
-        return parse('tan(2+6*sin58)')
-
-    @expect('+(tan(2),b(*(6,sin(58))))')
-    def parse_test_3():
-        return parse('tan2+ 6*sin58')
-
-    @expect('*(gcd(,(9,8)),b(32))')
-    def parse_test_4():
-        return parse('gcd(9,8)* 32')
-
-    @expect('**(2,**(2,3))')
-    def parse_test_5():
-        return parse('2**2**3')
-
-    @expect('*(+(1,2),6)')
-    def parse_test_6():
-        return parse('1+2* 6')
-
-    @expect('*(+(1,2),**(6,b(8)))')
-    def parse_test_7():
-        return parse('1+2* 6** 8')
-
-    @expect('+(-(2),2)')
-    def parse_test_9():
-        return parse('-2+2')
-
-    @expect('*(gcd(,(9,8)),32)')
-    def parse_test_10():
-        return parse('gcd(9,8)*32')
-
-    @expect('sin(0.167)')
-    def parse_test_11():
-        return parse('sin0.167')
-
-    @expect('sin(*(2,pi))')
-    def parse_test_12():
-        return parse('sin(2*pi)')
-    
-    @expect('sin(*(2,b(+(1,pi))))')
-    def parse_test_13():
-        return parse('sin(2* 1+pi)')
-    
-    @expect('*(2,b(*(+(1,pi),/(3,6))))')
-    def parse_test_14():
-        return parse('2* 1+pi* 3/6)')
