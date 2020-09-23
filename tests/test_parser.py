@@ -26,6 +26,14 @@ def test_parse_7():
 
 def test_parse_7a():
     assert str(parse('1+2* 6** 4+4')) == '*(+(1,2),**(6,b(+(4,4))))'
+def test_parse_7b():
+    assert str(parse('2+2 *3 +4')) == '+(*(+(2,2),3),4)'
+def test_parse_7c():
+    assert str(parse('2+2* 3+4')) == '*(+(2,2),+(3,4))'
+def test_parse_7d():
+    assert str(parse('2+2 *3*3')) == '*(*(+(2,2),3),3)'
+def test_parse_7e():
+    assert str(parse('2+2* 3*3')) == '*(+(2,2),*(3,3))'
 
 def test_parse_8():
     assert str(parse('1+2 *6 **8')) == '**(*(+(1,2),6),8)'
