@@ -2,7 +2,7 @@ import re
 
 binary_re = re.compile('(\+|\-|\*\*|\*|\/|,|\s)')
 functionre = re.compile("([a-z|A-Z]+)((?:[0-9]+\.)?[0-9]*)")
-number_re = re.compile('(?:((?:[0-9]*\.)?[0-9]+)(?:e((?:[0-9]+\.)?[0-9]+))?(?:pi|e|tau)?|pi|e|tau)')
+number_re = re.compile('(?:((?:[0-9]*\.)?[0-9]+)(?:E((?:[0-9]+\.)?[0-9]+))?(?:pi|e|tau)?|pi|e|tau)')
 
 # Parent type for all tokens
 class PrattToken:
