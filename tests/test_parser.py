@@ -1,54 +1,43 @@
-from eql.parser import parse
+from eql.parser import EQLError, parse
+import pytest
 
-def test_parse_1():
-    assert str(parse('2+2')) == '+(2,2)'
 
-def test_parse_2():
-    assert str(parse('tan(2+6*sin58)')) == 'tan(+(2,*(6,sin(58))))'
+def test_parse():
+    assert parse('2+2') == '(2+2)'
+    assert parse("1+2* 6") == '((1+2)*6)'
+    assert parse("1+2 *6") == '((1+2)*6)'
+    assert parse('2+2 +4* 3') == '(((2+2)+4)*3)'
+    assert parse('2+2') == '(2+2)'
+    assert parse('tan(2+6*sin(58))') == '(tan(2+6*sin(58)))'
+    assert parse('gcd(9,8)* 32') == '((gcd(9,8))*32)'
+    assert parse('2**2**3') == '(2**2**3)'
+    assert parse('1+2* 6') == '((1+2)*6)'
+    assert parse('1+2* 6** 8') == '(((1+2)*6)**8)'
+    assert parse('1+2* 6** 4+4') == '(((1+2)*6)**4+4)'
+    assert parse('2+2 *3 +4') == '(((2+2)*3)+4)'
+    assert parse('2+2* 3+4') == '((2+2)*3+4)'
+    assert parse('2+2 *3*3') == '((2+2)*3*3)'
+    assert parse('2+2* 3*3') == '((2+2)*3*3)'
+    assert parse('2+2 +4 *3') == '(((2+2)+4)*3)'
+    assert parse('1+2 *6 **8') == '(((1+2)*6)**8)'
+    assert parse('-2+2') == '(-2+2)'
+    assert parse('sin(2*pi)') == '(sin(2*pi))'
+    assert parse('3+3 *2+sin(2+2* 1+pi)') == '((3+3)*2+sin((2+2)*1+pi))'
+    assert parse('2* 1+pi* 3/6') == '(((2)*1+pi)*3/6)'
+    assert parse('2* 1+pi* (3/6)') == '(((2)*1+pi)*(3/6))'
+    assert parse('2/600e-9') == '(2/600e-9)'
+    assert parse('3.2*6.5+8.0 *6') == '((3.2*6.5+8.0)*6)'
 
-def test_parse_3():
-    assert str(parse('tan2+ 6*sin58')) == '+(tan(2),b(*(6,sin(58))))'
 
-def test_parse_3a():
-    assert str(parse('tan2 +6*sin58')) == '+(tan(2),*(6,sin(58)))'
+def test_parse_exceptions():
+    with pytest.raises(EQLError) as e:
+        assert parse('1 1')
 
-def test_parse_4():
-    assert str(parse('gcd(9,8)* 32')) == '*(gcd(,(9,8)),b(32))'
+    with pytest.raises(EQLError) as e:
+        assert parse('1* *1')
 
-def test_parse_5():
-    assert str(parse('2**2**3')) == '**(2,**(2,3))'
+    with pytest.raises(EQLError) as e:
+        assert parse('*1 *1')
 
-def test_parse_6():
-    assert str(parse('1+2* 6')) == '*(+(1,2),6)'
-
-def test_parse_7():
-    assert str(parse('1+2* 6** 8')) == '*(+(1,2),**(6,b(8)))'
-
-def test_parse_7a():
-    assert str(parse('1+2* 6** 4+4')) == '*(+(1,2),**(6,b(+(4,4))))'
-def test_parse_7b():
-    assert str(parse('2+2 *3 +4')) == '+(*(+(2,2),3),4)'
-def test_parse_7c():
-    assert str(parse('2+2* 3+4')) == '*(+(2,2),+(3,4))'
-def test_parse_7d():
-    assert str(parse('2+2 *3*3')) == '*(*(+(2,2),3),3)'
-def test_parse_7e():
-    assert str(parse('2+2* 3*3')) == '*(+(2,2),*(3,3))'
-
-def test_parse_8():
-    assert str(parse('1+2 *6 **8')) == '**(*(+(1,2),6),8)'
-
-def test_parse_9():
-    assert str(parse('-2+2')) == '+(-(2),2)'
-
-def test_parse_11():
-    assert str(parse('sin0.167')) == 'sin(0.167)'
-
-def test_parse_12():
-    assert str(parse('sin(2*pi)')) == 'sin(*(2,pi))'
-
-def test_parse_13():
-    assert str(parse('sin(2* 1+pi)')) == 'sin(*(2,b(+(1,pi))))'
-
-def test_parse_14():
-    assert str(parse('2* 1+pi* 3/6)')) == '*(2,b(*(+(1,pi),/(3,6))))'
+    with pytest.raises(EQLError) as e:
+        assert parse('1 *1*')
