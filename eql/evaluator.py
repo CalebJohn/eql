@@ -42,7 +42,10 @@ def evaluate(rpn: list, ntype: numbers.Number = fractions.Fraction) -> numbers.N
     stack = Stack()
     for t in rpn:
         if t.isNumeral():
-            stack.push(ntype(str(t)))
+            if t.isComplex():
+                stack.push(complex(str(t)))
+            else:
+                stack.push(ntype(str(t)))
         elif t.isFunc():
             if t.value in allowed_functions:
                 arg = stack.pop()

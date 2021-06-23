@@ -62,6 +62,8 @@ class Token:
         return self.token_type == self.CLOSEPAREN
     def isSpace(self):
         return self.token_type == self.WHITESPACE
+    def isComplex(self):
+        return self.value[-1].lower() == 'j'
 
     def precedence(self):
         if not self.isOp():
@@ -85,7 +87,7 @@ regexes = [(re.compile(r'\s+'), Token.WHITESPACE),
            (re.compile(r'(\+|\-|\*\*|\*|\/|,)'), Token.OPERATOR),
            (re.compile(r'\('), Token.OPENPAREN),
            (re.compile(r'\)'), Token.CLOSEPAREN),
-           (re.compile(r'-?\d+\.?\d*(?:[eE][-+]?\d+)?|pi|e|tau'), Token.CHARACTER),
+           (re.compile(r'-?\d+\.?\d*(?:[eE][-+]?\d+)?j?|pi|e|tau'), Token.CHARACTER),
            (re.compile(r'[a-zA-z]+'), Token.FUNCTION)]
 
 
