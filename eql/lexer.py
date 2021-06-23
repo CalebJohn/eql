@@ -1,5 +1,6 @@
 import re
 from typing import List
+import operator
 
 
 Token_Type = int
@@ -20,6 +21,14 @@ associativity = {
         '/': 'l',
         '**': 'r',
 }
+operator_map = {
+        '*': operator.mul,
+        '/': operator.truediv,
+        '+': operator.add,
+        '-': operator.sub,
+        '**': operator.pow,
+        }
+
 
 class NotOperator(Exception):
     pass
@@ -65,12 +74,18 @@ class Token:
             raise(NotOperator(f"Token {self.value} does not have an associativity ch:{self.location}"))
         return associativity[self.value]
 
+    def as_func(self):
+        if not self.isOp():
+            raise(NotOperator(f"Token {self.value} does not represent a function ch:{self.location}"))
+        return operator_map[self.value]
+
+
 
 regexes = [(re.compile(r'\s+'), Token.WHITESPACE),
            (re.compile(r'(\+|\-|\*\*|\*|\/|,)'), Token.OPERATOR),
            (re.compile(r'\('), Token.OPENPAREN),
            (re.compile(r'\)'), Token.CLOSEPAREN),
-           (re.compile(r'-?\d+\.?\d*(?:[eE][-+]?\d+)?|pi|e'), Token.CHARACTER),
+           (re.compile(r'-?\d+\.?\d*(?:[eE][-+]?\d+)?|pi|e|tau'), Token.CHARACTER),
            (re.compile(r'[a-zA-z]+'), Token.FUNCTION)]
 
 
