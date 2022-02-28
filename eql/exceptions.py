@@ -22,3 +22,6 @@ class MissingValueAfterSpace(EQLException):
 
 class MissingOp(EQLException):
     message = 'There should be an operator here.'
+
+class MissingLParen(EQLException):
+    message = "Function names must be immediately followed by a left parenthesis."

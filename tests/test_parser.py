@@ -1,5 +1,5 @@
 from eql.parser import parse
-from eql.exceptions import MissingOp, MissingValue, MissingParen, MissingValueAfterSpace
+from eql.exceptions import MissingOp, MissingLParen, MissingValue, MissingParen, MissingValueAfterSpace
 import pytest
 
 cases = {
@@ -50,3 +50,6 @@ def test_parse_exceptions():
 
     with pytest.raises(MissingValue) as e:
         assert parse('1 *1*')
+
+    with pytest.raises(MissingLParen) as e:
+        assert parse('sin (2)')

@@ -1,6 +1,6 @@
 from .lexer import tokenize
 from .queue import Queue, Stack
-from .exceptions import MissingOp, MissingParen, MissingValue, MissingValueAfterSpace
+from .exceptions import MissingOp, MissingLParen, MissingParen, MissingValue, MissingValueAfterSpace
 
 
 def parse(eq):
@@ -9,18 +9,25 @@ def parse(eq):
 
     tokens = tokenize(eq)
     # Used for syntax checking
-    last_t = tokens[0]
+    last_t = None
     
     output = Queue()
     operators = Stack()
     for t in tokens:
         # Start with the syntax checks
-        if t.isSpace() and last_t.isOp():
-            raise(MissingValueAfterSpace(eq, t))
-        if t.isOp() and last_t.isOp():
-            raise(MissingValue(eq, t))
-        if not t.isOp() and last_t.isSpace():
-            raise(MissingOp(eq, t))
+        if last_t is not None:
+            if last_t.isFunc() and not t.isLParen():
+                raise(MissingLParen(eq, t))
+            if t.isSpace() and last_t.isOp():
+                raise(MissingValueAfterSpace(eq, t))
+            if t.isOp() and last_t.isOp():
+                raise(MissingValue(eq, t))
+            if not t.isOp() and last_t.isSpace():
+                raise(MissingOp(eq, t))
+        else:
+            # Special case for when an equation starts with an operator
+            if t.isOp():
+                raise(MissingValue(eq, t))
 
         if t.isNumeral():
             output.push(t)
