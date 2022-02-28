@@ -34,7 +34,7 @@ def parse(eq):
             o = operators.peek()
             while (o and o.isOp()
                     and (p < o.precedence()
-                        or (p == o.precedence() and t.associativity=='l'))):
+                        or (p == o.precedence() and t.associativity() == 'l'))):
                 output.push(operators.pop())
                 o = operators.peek()
 
