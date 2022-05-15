@@ -1,38 +1,19 @@
-[tool.pdm]
-includes = []
-
-[tool.pdm.dev-dependencies]
-dev = [
-    "pytest>=7.0.1",
-    "flake8<4.0.0,>=3.8.4",
-    "pylint<3.0.0,>=2.6.0",
-    "mypy<1.0,>=0.790",
-    "black<21.0,>=20.8b1",
-    "ipython<8.0.0,>=7.19.0",
-]
-
-[tool.pdm.scripts]
-test = {cmd = "pytest tests"}
-
-[tool.pyright]
-extraPaths = ["__pypackages__/3.10/lib/"]
-
-[build-system]
-requires = ["pdm-pep517"]
-build-backend = "pdm.pep517.api"
-
-[project]
+[tool.poetry]
 name = "eql"
 version = "0.1"
 description = ""
-authors = [
-    {name = "CalebJohn", email = "calebjohn4@gmail.com"},
-]
-dependencies = ["sympy>=1.6.2"]
-requires-python = ">=3.7"
-license = {text = "MIT"}
+authors = ["CalebJohn <eql@calebjohn.ca>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+sympy = "^1.6.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
 
 [project.urls]
 Homepage = ""
-
-[project.optional-dependencies]
