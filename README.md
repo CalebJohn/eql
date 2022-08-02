@@ -5,17 +5,15 @@ eql is a mathematical grammar meant for simple keyboard only calculations. The p
 
 eql uses most of the same bedmas (pemdas) operations that you're probably already accustomed to, but adds whitespace as a new operator (wbedmas). Whitespace functions as an accumulator that enables grouping of operations without parenthesis. Let's see what that looks like.
 
-```
-1+2 *6 = 3*6 = (1+2)*6 = 18
-```
+`1+2 *6` is equivalent to `(1+2)*6`
 
-In the above example, the calculation is "accumulated" after 1+2.
+In the above example, the calculation is "accumulated" after 1+2. This demonstrates the primary benefit of accumulation, namely, it allows you to benefit from parenthesis as you type (rather than having to plan out the entire calculation ahead of time).
 
 eql follows bedmas is most areas, which means that logical grouping by operator still works as expected.
 
 ```
-'2+2 *3+4' = (2+2)*3+4 = 12+4 = 16
-'2+2 +3*3' = (2+2)+3*3 = 4+9 = 13
+2+2 *3+4 = (2+2)*3+4 = 12+4 = 16
+2+2 +3*3 = (2+2)+3*3 = 4+9 = 13
 ```
 
 Parenthesis also work as expected.
