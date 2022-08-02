@@ -5,14 +5,15 @@ description = "A minimalist command line calculator"
 authors = [
     {name = "CalebJohn", email = "eql@calebjohn.ca"},
 ]
-dependencies = [
-    "sympy>=1.6.2",
-]
+dependencies = []
 requires-python = ">=3.7"
 readme = "README.md"
 license = {text = "MIT"}
 
 [project.optional-dependencies]
+sympy = [
+    "sympy",
+]
 [tool.pdm]
 [tool.pdm.dev-dependencies]
 dev = [
