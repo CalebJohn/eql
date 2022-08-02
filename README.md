@@ -9,12 +9,19 @@ eql uses most of the same bedmas (pemdas) operations that you're probably alread
 1+2 *6 = 3*6 = (1+2)*6 = 18
 ```
 
-In the above example, the calculation is "accumulated" after 1+2. The meaning of that eql expression is equivalent to `(1+2)*6`.
+In the above example, the calculation is "accumulated" after 1+2.
+
+eql follows bedmas is most areas, which means that logical grouping by operator still works as expected.
 
 ```
 '2+2 *3+4' = (2+2)*3+4 = 12+4 = 16
 '2+2 +3*3' = (2+2)+3*3 = 4+9 = 13
+```
 
+Parenthesis also work as expected.
+
+```
+(1+2 *6+2)*3 = ((1+2)*6+3)*3 = 60
 ```
 
 eql also supports some functions. Functions use polish notation, and can drop the parenthesis for single number argument functions.
