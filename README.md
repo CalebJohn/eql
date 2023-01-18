@@ -9,7 +9,7 @@ eql uses most of the same bedmas (pemdas) operations that you're probably alread
 
 In the above example, the calculation is "accumulated" after 1+2. This demonstrates the primary benefit of accumulation, namely, it allows you to benefit from parenthesis as you type (rather than having to plan out the entire calculation ahead of time).
 
-eql follows bedmas is most areas, which means that logical grouping by operator still works as expected.
+eql follows bedmas in most areas, which means that logical grouping by operator still works as expected.
 
 ```
 2+2 *3+4 = (2+2)*3+4 = 12+4 = 16
