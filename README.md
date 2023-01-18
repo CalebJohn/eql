@@ -22,7 +22,7 @@ Parenthesis also work as expected.
 (1+2 *6+2)*3 = ((1+2)*6+3)*3 = 60
 ```
 
-eql also supports some functions. Functions use polish notation, and can drop the parenthesis for single number argument functions.
+eql also supports some functions. Functions use Polish notation, and can drop the parenthesis for single number argument functions.
 
 ```
 gcd(9,8) *32+4 = gcd(9, 8)*32+4
