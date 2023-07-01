@@ -144,20 +144,21 @@ class EqlShell(cmd.Cmd):
         return True
 
 
-parser = argparse.ArgumentParser(description="eql is a mathematical grammar meant for simple keyboard only calculations.")
+def main():
+    parser = argparse.ArgumentParser(description="eql is a mathematical grammar meant for simple keyboard only calculations.")
 
-parser.add_argument('equation', type=str, nargs='*', help='The equation. Wrap in quotes to avoid bash getting in the way.')
-parser.add_argument('-f', '--fraction', action='store_true',
-                    default=False, help="Display decimal results as a fraction.")
-parser.add_argument('-v', '--verbose', action='store_true', default=False,
-                    help="Output the entire equation at every step.")
-parser.add_argument('-s', '--sympy', action='store_true', default=False,
-                    help="Use sympy as the execution engine. Not recommended because it's slow and the current version of eql does not take full advantage of it.")
-args = parser.parse_args()
+    parser.add_argument('equation', type=str, nargs='*', help='The equation. Wrap in quotes to avoid bash getting in the way.')
+    parser.add_argument('-f', '--fraction', action='store_true',
+                        default=False, help="Display decimal results as a fraction.")
+    parser.add_argument('-v', '--verbose', action='store_true', default=False,
+                        help="Output the entire equation at every step.")
+    parser.add_argument('-s', '--sympy', action='store_true', default=False,
+                        help="Use sympy as the execution engine. Not recommended because it's slow and the current version of eql does not take full advantage of it.")
+    args = parser.parse_args()
 
-shell = EqlShell(args.fraction, args.verbose, args.sympy)
+    shell = EqlShell(args.fraction, args.verbose, args.sympy)
 
-if args.equation:
-    shell.onecmd(' '.join(args.equation))
-else:
-    shell.cmdloop()
+    if args.equation:
+        shell.onecmd(' '.join(args.equation))
+    else:
+        shell.cmdloop()

@@ -1,25 +1,27 @@
-[project]
+[tool.poetry]
 name = "eql"
 version = "1.0.0"
 description = "A minimalist command line calculator"
-authors = [
-    {name = "CalebJohn", email = "eql@calebjohn.ca"},
+authors = ["CalebJohn <git@calebjohn.ca>"]
+license = "MIT"
+packages = [
+  { include = "eql" },
+  { include = "scripts" }
 ]
-dependencies = []
-requires-python = ">=3.7"
 readme = "README.md"
-license = {text = "MIT"}
 
-[project.optional-dependencies]
-sympy = [
-    "sympy",
-]
-[tool.pdm]
-[tool.pdm.dev-dependencies]
-dev = [
-    "pytest>=6.2.5",
-]
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=6.2.5"
+
+[tool.poetry.extras]
+sympy = ["sympy"]
+
+[tool.poetry.scripts]
+eql = "scripts.eql:main"
 
 [build-system]
-requires = ["pdm-pep517>=1.0.0"]
-build-backend = "pdm.pep517.api"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
