@@ -36,3 +36,9 @@ Place the cli.py script in your bin/ folder (I named mine `=` so it's accessible
 Invoking the cli without arguments will enter a **very** basic interactive mode. This is sometimes helpful for longer calculations, if doing a lot of long calculations please consider an environment better suited for it (e.g. using a script).
 
 If you want to use the optional sympy evaluator, you'll need to install sympy version 1.9 (or greater)
+
+For NixOS users (with flakes enabled) you can test it out easily with
+
+```
+nix run github:CalebJohn/eql
+```
