@@ -162,3 +162,6 @@ def main():
         shell.onecmd(' '.join(args.equation))
     else:
         shell.cmdloop()
+
+if __name__ == "__main__":
+    main()
